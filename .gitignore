@@ -1,0 +1,16 @@
+# Logs
+logs
+*.log
+
+# JetBrains
+.idea
+
+# Dependency directory
+node_modules
+
+# sdk-coverage-tests
+**/test/coverage/generic/
+coverage-test-report.xml
+
+# yarn
+.yarn

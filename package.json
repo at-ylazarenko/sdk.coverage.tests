@@ -1,0 +1,28 @@
+{
+  "name": "@applitools/coverage-tests",
+  "private": true,
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "main": "index.js",
+  "description": "Coverage Tests for Applitools SDKs",
+  "author": "Applitools <team@applitools.com>",
+  "license": "SEE LICENSE IN LICENSE",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/applitools/sdk.coverage.tests.git"
+  },
+
+  "scripts": {
+    "ruby": "cd ruby && coverage-tests create-tests --path .",
+    "ruby:run": "cd ruby && rspec --default-path ./test test/coverage/generic",
+    "python": "cd python && coverage-tests create-tests --path ."
+  },
+
+  "dependencies": {
+    "@applitools/sdk-coverage-tests": "1.0.1",
+    "@typescript-eslint/parser": "^2.14.0",
+    "typescript": "^3.7.4"
+  }
+}
