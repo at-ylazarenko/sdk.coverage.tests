@@ -15,7 +15,8 @@
   },
 
   "scripts": {
-    "ruby": "cd ruby && coverage-tests create-tests --path .",
+    "ruby": "cd ruby && coverage-tests create-tests --path ./configuration && yarn ruby:files",
+    "ruby:files": "cd ruby/test/coverage/generic && for file in *.spec.js; do mv \"$file\" \"${file/.spec.js/_spec.rb}\"; done",
     "ruby:run": "cd ruby && rspec --default-path ./test test/coverage/generic",
     "python": "cd python && coverage-tests create-tests --path ."
   },
@@ -24,5 +25,8 @@
     "@applitools/sdk-coverage-tests": "1.0.1",
     "@typescript-eslint/parser": "^2.14.0",
     "typescript": "^3.7.4"
+  },
+  "devDependencies": {
+    "mocha": "^8.0.1"
   }
 }

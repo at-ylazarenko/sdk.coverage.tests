@@ -1,5 +1,5 @@
 const supportedTests = require('./supported-tests')
-const initialize = require('./initialize')
+const {initialize} = require('./initialize')
 const testFrameworkTemplate = require('./template')
 
 module.exports = {

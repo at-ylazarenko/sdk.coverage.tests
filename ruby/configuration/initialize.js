@@ -1,7 +1,7 @@
 'use strict'
 const {makeEmitTracker} = require('@applitools/sdk-coverage-tests')
 
-function makeSpecEmitter(options) {
+function initialize(options) {
   const tracker = makeEmitTracker()
   function ruby(chunks, ...values) {
     let code = ''
@@ -31,13 +31,7 @@ function makeSpecEmitter(options) {
 
   tracker.storeHook(
       'beforeEach',
-      ruby`@batch = Applitools::BatchInfo.new(${process.env.APPLITOOLS_BATCH_NAME || 'Ruby Coverage Tests'})`,
-  )
-
-  tracker.storeHook(
-      'beforeEach',
-      ruby`@eyes = Applitools::Selenium::Eyes.new`,
-      // TODO add executi
+      ruby`@eyes = eyes(is_visual_grid: ${options.executionMode.isVisualGrid}, is_css_stitching: ${options.executionMode.isCssStitching}, branch_name: ${options.branchName})`,
   )
 
   tracker.storeHook('afterEach', ruby`@driver.quit`)
@@ -140,17 +134,17 @@ function makeSpecEmitter(options) {
   const eyes = {
     open({appName, viewportSize}) {
       tracker.storeCommand(ruby`@eyes.configure do |conf|
-        conf.app_name = ${appName}
-        conf.test_name =  ${options.baselineTestName}
-        conf.viewport_size = Applitools::RectangleSize.new(${viewportSize.width}, ${viewportSize.height})
-      end
-      @eyes.open(driver: @driver)`)
+      conf.app_name = ${appName}
+      conf.test_name =  ${options.baselineTestName}
+      conf.viewport_size = Applitools::RectangleSize.new(${viewportSize.width}, ${viewportSize.height})
+    end
+    @eyes.open(driver: @driver)`)
     },
     check(checkSettings) {
       tracker.storeCommand(ruby`@eyes.check(${checkSettings})`)
     },
     checkWindow(tag, matchTimeout, stitchContent) {
-      tracker.storeCommand(ruby`@eyes.check_window(tag:${tag}, timeout:${matchTimeout})`)
+      tracker.storeCommand(ruby`@eyes.check_window(tag: ${tag}, timeout: ${matchTimeout})`)
     },
     checkFrame(element, matchTimeout, tag) {
       let args = `name_or_id: '${element}'` +
@@ -213,4 +207,4 @@ function makeSpecEmitter(options) {
   return {tracker, driver, eyes}
 }
 
-module.exports = makeSpecEmitter
+module.exports = {initialize}
