@@ -1,6 +1,5 @@
 require 'eyes_selenium'
 RSpec.configure do |config|
-
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
   end
@@ -24,6 +23,7 @@ RSpec.configure do |config|
       conf.branch_name = branch_name
       conf.parent_branch_name = 'master'
       conf.save_new_tests = false
+      conf.force_full_page_screenshot = false
       # eyes.close_batch = false TODO need to check property name for ruby
     end
     eyes.match_timeout = 0 unless is_visual_grid

@@ -7,4 +7,5 @@ module.exports = {
   initialize: initialize,
   supportedTests,
   testFrameworkTemplate: testFrameworkTemplate,
+  extname: '_spec.rb'
 }

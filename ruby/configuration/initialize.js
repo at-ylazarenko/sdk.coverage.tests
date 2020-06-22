@@ -1,5 +1,6 @@
 'use strict'
 const {makeEmitTracker} = require('@applitools/sdk-coverage-tests')
+const {checkSettingsParser} = require('./parser')
 
 function initialize(options) {
   const tracker = makeEmitTracker()
@@ -48,7 +49,7 @@ function initialize(options) {
       tracker.storeCommand(ruby`@driver.get(${url})`)
     },
     executeScript(script, ...args) {
-      return tracker.storeCommand(ruby`await specs.executeScript(driver, ${script}, ...${args})`)
+      return tracker.storeCommand(ruby`@driver.execute_script(${script})`)
     },
     sleep(ms) {
       tracker.storeCommand(ruby`await specs.sleep(driver, ${ms})`)
@@ -82,7 +83,7 @@ function initialize(options) {
       tracker.storeCommand(ruby`await specs.setWindowSize(driver, ${size})`)
     },
     click(element) {
-      tracker.storeCommand(ruby`await specs.click(driver, ${element})`)
+      tracker.storeCommand(ruby`@driver.find_element(css: ${element}).click`)
     },
     type(element, keys) {
       tracker.storeCommand(ruby`await specs.type(driver, ${element}, ${keys})`)
@@ -141,7 +142,7 @@ function initialize(options) {
     @eyes.open(driver: @driver)`)
     },
     check(checkSettings) {
-      tracker.storeCommand(ruby`@eyes.check(${checkSettings})`)
+      tracker.storeCommand(`@eyes.check(${checkSettingsParser(checkSettings)})`)
     },
     checkWindow(tag, matchTimeout, stitchContent) {
       tracker.storeCommand(ruby`@eyes.check_window(tag: ${tag}, timeout: ${matchTimeout})`)
@@ -150,7 +151,7 @@ function initialize(options) {
       let args = `name_or_id: '${element}'` +
           `${matchTimeout? `, timeout: ${matchTimeout}`: ''}` +
           `${tag? `, tag: ${tag}`: ''}`
-      tracker.storeCommand(`@eyes.check_frame(${args})`)
+      tracker.storeCommand(ruby`@eyes.check_frame(frame: ${element}, timeout: ${matchTimeout}, tag: ${tag})`)
     },
     checkElement(element, matchTimeout, tag) {
       tracker.storeCommand(ruby`await eyes.checkElement(
@@ -160,17 +161,16 @@ function initialize(options) {
       )`)
     },
     checkElementBy(selector, matchTimeout, tag) {
-      tracker.storeCommand(ruby`await eyes.checkElementBy(
-        ${selector},
-        ${matchTimeout},
-        ${tag},
-      )`)
+      tracker.storeCommand(ruby`@eyes.check_region(:css, ${selector},
+                       tag: ${tag},
+                       match_timeout: ${matchTimeout},
+                       stitch_content: true)`)
     },
     checkRegion(region, matchTimeout, tag) {
-      let args = `css: '${region}'` +
-          `${matchTimeout? `, timeout: ${matchTimeout}`: ''}` +
-          `${tag? `, tag: ${tag}`: ''}`
-      tracker.storeCommand(ruby`@eyes.checkRegion(${args})`)
+      tracker.storeCommand(rruby`@eyes.check_region(:css, ${selector},
+                       tag: ${tag},
+                       match_timeout: ${matchTimeout},
+                       stitch_content: true)`)
     },
     checkRegionByElement(element, matchTimeout, tag) {
       tracker.storeCommand(ruby`await eyes.checkRegionByElement(
