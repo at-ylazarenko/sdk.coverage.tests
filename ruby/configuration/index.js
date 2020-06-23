@@ -3,7 +3,7 @@ const {initialize} = require('./initialize')
 const testFrameworkTemplate = require('./template')
 
 module.exports = {
-  name: 'ruby-sdk',
+  name: 'ruby',
   initialize: initialize,
   supportedTests,
   testFrameworkTemplate: testFrameworkTemplate,

@@ -8,6 +8,9 @@ logs
 # Dependency directory
 node_modules
 
+# reports
+**/tmp
+
 # sdk-coverage-tests
 **/test/coverage/generic/
 coverage-test-report.xml

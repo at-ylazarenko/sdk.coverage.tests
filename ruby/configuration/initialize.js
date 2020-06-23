@@ -62,12 +62,12 @@ function initialize(options) {
     },
     findElement(selector) {
       return tracker.storeCommand(
-          ruby`await specs.findElement(driver, specs.toSupportedSelector({type: 'css', selector: ${selector}}))`,
+          ruby`@driver.find_element(css: ${selector})`,
       )
     },
     findElements(selector) {
       return tracker.storeCommand(
-          ruby`await specs.findElements(driver, specs.toSupportedSelector({type: 'css', selector: ${selector}}))`,
+          ruby`@driver.find_elements(css: ${selector})`,
       )
     },
     getWindowLocation() {
@@ -86,7 +86,7 @@ function initialize(options) {
       tracker.storeCommand(ruby`@driver.find_element(css: ${element}).click`)
     },
     type(element, keys) {
-      tracker.storeCommand(ruby`await specs.type(driver, ${element}, ${keys})`)
+      tracker.storeCommand(ruby`@driver(${element}, ${keys})`)
     },
     waitUntilDisplayed() {
       // TODO: implement if needed
