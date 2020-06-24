@@ -12,6 +12,7 @@ node_modules
 **/tmp
 
 # sdk-coverage-tests
+**/spec/coverage/generic/
 **/test/coverage/generic/
 coverage-test-report.xml
 

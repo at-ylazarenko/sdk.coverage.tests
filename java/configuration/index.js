@@ -3,10 +3,10 @@ const {initialize} = require('./initialize')
 const testFrameworkTemplate = require('./template')
 
 module.exports = {
-  name: 'eyes_selenium_ruby',
+  name: 'eyes_selenium_java',
   initialize: initialize,
   supportedTests,
   testFrameworkTemplate: testFrameworkTemplate,
-  ext: '_spec.rb',
-  out: './spec/coverage/generic'
+  ext: '.java',
+  out: './src/test/coverage/generic'
 }

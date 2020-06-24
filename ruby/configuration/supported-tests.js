@@ -1,4 +1,7 @@
 module.exports = [
+  {name: 'TestAcmeLogin', executionMode: {isCssStitching: true}, disabled: true},
+  {name: 'TestAcmeLogin', executionMode: {isVisualGrid: true}},
+  {name: 'TestAcmeLogin', executionMode: {isScrollStitching: true}, disabled: true},
   {name: 'TestCheckElementFully_Fluent', executionMode: {isVisualGrid: true}},
   {name: 'TestCheckElementFully_Fluent', executionMode: {isCssStitching: true}},
   {name: 'TestCheckElementFully_Fluent', executionMode: {isScrollStitching: true}},

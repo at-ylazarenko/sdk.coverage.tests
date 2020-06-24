@@ -14,16 +14,16 @@
     "url": "git+https://github.com/applitools/sdk.coverage.tests.git"
   },
   "scripts": {
+    "java:create": "cd java && coverage-tests create-tests --path ./configuration",
     "ruby:test": "yarn ruby:create && yarn ruby:run:parallel",
-    "ruby:create": "cd ruby && coverage-tests create-tests --path ./configuration && yarn ruby:files",
-    "ruby:files": "cd ruby/test/coverage/generic && for file in *.spec.js; do mv \"$file\" \"${file/.spec.js/_spec.rb}\"; done",
-    "ruby:run": "cd ruby && APPLITOOLS_BATCH_NAME='Ruby Coverage Tests' APPLITOOLS_BATCH_ID=$(uuidgen) bundle exec rspec test/coverage/generic",
-    "ruby:run:parallel": "cd ruby && APPLITOOLS_BATCH_NAME='Ruby Coverage Tests' APPLITOOLS_BATCH_ID=$(uuidgen) bundle exec parallel_rspec -n 6 test/coverage/generic",
+    "ruby:create": "cd ruby && coverage-tests create-tests --path ./configuration",
+    "ruby:run": "cd ruby && APPLITOOLS_BATCH_NAME='Ruby Coverage Tests' APPLITOOLS_BATCH_ID=$(uuidgen) bundle exec rspec spec/coverage/generic",
+    "ruby:run:parallel": "cd ruby && APPLITOOLS_BATCH_NAME='Ruby Coverage Tests' APPLITOOLS_BATCH_ID=$(uuidgen) bundle exec parallel_rspec -n 6 spec/coverage/generic",
     "ruby:conf:test": "mocha './ruby/configuration/test/*.spec.js'",
     "python": "cd python && coverage-tests create-tests --path ."
   },
   "dependencies": {
-    "@applitools/sdk-coverage-tests": "1.0.3",
+    "@applitools/sdk-coverage-tests": "1.0.4",
     "@typescript-eslint/parser": "^2.14.0",
     "typescript": "^3.7.4"
   },

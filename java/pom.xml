@@ -1,0 +1,24 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.applitools</groupId>
+    <artifactId>java-coverage-generic</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0</version>
+    <name>Java-coverage-generic-tests</name>
+
+    <dependencies>
+        <!-- This is the Applitools Selenium Java SDK -->
+        <dependency>
+            <groupId>com.applitools</groupId>
+            <artifactId>eyes-selenium-java3</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>6.9.8</version>
+        </dependency>
+    </dependencies>
+</project>

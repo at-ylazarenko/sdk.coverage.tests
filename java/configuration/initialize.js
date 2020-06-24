@@ -4,7 +4,7 @@ const {checkSettingsParser} = require('./parser')
 
 function initialize(options) {
   const tracker = makeEmitTracker()
-  function ruby(chunks, ...values) {
+  function java(chunks, ...values) {
     let code = ''
     values.forEach((value, index) => {
       let stringified = ''
@@ -13,7 +13,7 @@ function initialize(options) {
       } else if (typeof value === 'function') {
         stringified = value.toString()
       } else if (typeof value === 'undefined'){
-        stringified = 'nil'
+        throw Error(`Undefined shouldn't be passed to the java code`)
       } else {
         stringified = JSON.stringify(value)
       }
@@ -22,21 +22,31 @@ function initialize(options) {
     return code + chunks[chunks.length - 1]
   }
 
-  // tracker.storeHook('deps', `require 'eyes_selenium'`)
-  tracker.addSyntax('var', ({name, value}) => `${name} = ${value}`)
+  function argumentCheck(actual, ifUndefined){
+     return (typeof actual === 'undefined') ? ifUndefined : actual
+  }
+
+  tracker.storeHook('deps', `package test.coverage.generic;`)
+  tracker.storeHook('deps', ``)
+  tracker.storeHook('deps', `import test.coverage.TestSetup;`)
+  tracker.storeHook('deps', `import com.applitools.eyes.*;`)
+  tracker.storeHook('deps', `import org.openqa.selenium.By;`)
+  tracker.storeHook('deps', `import org.testng.annotations.*;`)
+
+  tracker.addSyntax('var', ({name, value}) => `WebElement ${name} = ${value}`)
 
   tracker.storeHook(
       'beforeEach',
-      ruby`@driver = Selenium::WebDriver.for :remote, desired_capabilities: :chrome`,
+      java`initEyes(${argumentCheck(options.executionMode.isVisualGrid, false)}, ${argumentCheck(options.executionMode.isCssStitching, false)}, ${argumentCheck(options.branchName, "master")});`,
   )
 
   tracker.storeHook(
       'beforeEach',
-      ruby`@eyes = eyes(is_visual_grid: ${options.executionMode.isVisualGrid}, is_css_stitching: ${options.executionMode.isCssStitching}, branch_name: ${options.branchName})`,
+      java`buildDriver();`,
   )
 
-  tracker.storeHook('afterEach', ruby`@driver.quit`)
-  tracker.storeHook('afterEach', ruby`@eyes.abort`)
+  tracker.storeHook('afterEach', java`driver.quit();`)
+  tracker.storeHook('afterEach', java`eyes.abort();`)
 
   const driver = {
     build(options) {
@@ -44,13 +54,13 @@ function initialize(options) {
       console.log('Need to be implemented')
     },
     cleanup() {
-      tracker.storeCommand(ruby`@driver.quit`)
+      tracker.storeCommand(java`driver.quit();`)
     },
     visit(url) {
-      tracker.storeCommand(ruby`@driver.get(${url})`)
+      tracker.storeCommand(java`driver.get(${url});`)
     },
     executeScript(script, ...args) {
-      return tracker.storeCommand(ruby`@driver.execute_script(${script})`)
+      return tracker.storeCommand(java`driver.execute_script(${script});`)
     },
     sleep(ms) {
       // TODO need implementation
@@ -66,12 +76,12 @@ function initialize(options) {
     },
     findElement(selector) {
       return tracker.storeCommand(
-          ruby`@driver.find_element(css: ${selector})`,
+          java`driver.findElement(css: ${selector});`,
       )
     },
     findElements(selector) {
       return tracker.storeCommand(
-          ruby`@driver.find_elements(css: ${selector})`,
+          java`driver.findElements(css: ${selector})`,
       )
     },
     getWindowLocation() {
@@ -91,11 +101,11 @@ function initialize(options) {
       console.log('Need to be implemented')
     },
     click(element) {
-      if(typeof element === 'object') tracker.storeCommand(ruby`${element}.click`)
-      else tracker.storeCommand(ruby`@driver.find_element(css: ${element}).click`)
+      if(typeof element === 'object') tracker.storeCommand(java`${element}.click`)
+      else tracker.storeCommand(java`driver.findElement(By.cssSelector(${element})).click`)
     },
     type(element, keys) {
-      tracker.storeCommand(ruby`${element}.send_keys(${keys})`)
+      tracker.storeCommand(java`${element}.sendKeys(${keys})`)
     },
     waitUntilDisplayed() {
       // TODO: implement if needed
@@ -143,34 +153,30 @@ function initialize(options) {
 
   const eyes = {
     open({appName, viewportSize}) {
-      tracker.storeCommand(ruby`@eyes.configure do |conf|
-      conf.app_name = ${appName}
-      conf.test_name =  ${options.baselineTestName}
-      conf.viewport_size = Applitools::RectangleSize.new(${viewportSize.width}, ${viewportSize.height})
-    end
-    @eyes.open(driver: @driver)`)
+      tracker.storeCommand(java`eyes.open(driver, ${appName}, ${options.baselineTestName}, new RectangleSize(${viewportSize.width}, ${viewportSize.height}));`)
     },
     check(checkSettings) {
-      tracker.storeCommand(`@eyes.check(${checkSettingsParser(checkSettings)})`)
+      tracker.storeCommand(`@eyes.check(${checkSettingsParser(checkSettings)});`)
     },
     checkWindow(tag, matchTimeout, stitchContent) {
-      tracker.storeCommand(ruby`@eyes.check_window(tag: ${tag}, timeout: ${matchTimeout})`)
+      if(matchTimeout || stitchContent) throw new Error(`There is no signature in java SDK for usage both matchTimeout and stitchContent`)
+      tracker.storeCommand(java`eyes.checkWindow(${argumentCheck(tag, '')});`)
     },
     checkFrame(element, matchTimeout, tag) {
-      tracker.storeCommand(ruby`@eyes.check_frame(frame: ${element}, timeout: ${matchTimeout}, tag: ${tag})`)
+      tracker.storeCommand(java`@eyes.check_frame(frame: ${element}, timeout: ${matchTimeout}, tag: ${tag});`)
     },
     checkElement(element, matchTimeout, tag) {
       // TODO need implementation
       console.log('Need to be implemented')
     },
     checkElementBy(selector, matchTimeout, tag) {
-      tracker.storeCommand(ruby`@eyes.check_region(:css, ${selector},
+      tracker.storeCommand(java`@eyes.check_region(:css, ${selector},
                        tag: ${tag},
                        match_timeout: ${matchTimeout},
                        stitch_content: true)`)
     },
     checkRegion(region, matchTimeout, tag) {
-      tracker.storeCommand(rruby`@eyes.check_region(:css, ${selector},
+      tracker.storeCommand(rjava`@eyes.check_region(:css, ${selector},
                        tag: ${tag},
                        match_timeout: ${matchTimeout},
                        stitch_content: true)`)
@@ -188,10 +194,10 @@ function initialize(options) {
       console.log('Need to be implemented')
     },
     close(throwEx) {
-      tracker.storeCommand(ruby`@eyes.close(throw_exception: ${throwEx})`)
+      tracker.storeCommand(java`eyes.close(${argumentCheck(throwEx, true)});`)
     },
     abort() {
-      tracker.storeCommand(ruby`@eyes.abort`)
+      tracker.storeCommand(java`eyes.abort();`)
     },
   }
 
