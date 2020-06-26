@@ -6,9 +6,8 @@ import com.applitools.eyes.selenium.ClassicRunner;
 import com.applitools.eyes.selenium.Eyes;
 import com.applitools.eyes.selenium.StitchMode;
 import com.applitools.eyes.visualgrid.services.VisualGridRunner;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.annotations.BeforeSuite;
 
@@ -46,7 +45,7 @@ public class TestSetup {
         eyes.setForceFullPageScreenshot(false);
     }
 
-    public void buildDriver(DesiredCapabilities capabilities) {
+    public void buildDriver(Capabilities capabilities) {
         String serverUrl = "http://localhost:4444/wd/hub";
         try {
             driver = new RemoteWebDriver(new URL(serverUrl), capabilities);
@@ -57,6 +56,7 @@ public class TestSetup {
     }
 
     public void buildDriver(){
-        buildDriver(DesiredCapabilities.chrome());
+        Capabilities chrome = new ChromeOptions().setHeadless(true);
+        buildDriver(chrome);
     }
 }

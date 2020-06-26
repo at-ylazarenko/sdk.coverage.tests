@@ -10,6 +10,7 @@ node_modules
 
 # reports
 **/tmp
+**/java_coverage_tests
 
 # sdk-coverage-tests
 **/spec/coverage/generic/

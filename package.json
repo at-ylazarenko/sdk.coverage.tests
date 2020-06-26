@@ -17,6 +17,7 @@
     "java:create": "cd java && coverage-tests create-tests --path ./configuration",
     "ruby:test": "yarn ruby:create && yarn ruby:run:parallel",
     "ruby:create": "cd ruby && coverage-tests create-tests --path ./configuration",
+    "ruby:report": "cd ruby && coverage-tests process-report --path ./configuration -v",
     "ruby:run": "cd ruby && APPLITOOLS_BATCH_NAME='Ruby Coverage Tests' APPLITOOLS_BATCH_ID=$(uuidgen) bundle exec rspec spec/coverage/generic",
     "ruby:run:parallel": "cd ruby && APPLITOOLS_BATCH_NAME='Ruby Coverage Tests' APPLITOOLS_BATCH_ID=$(uuidgen) bundle exec parallel_rspec -n 6 spec/coverage/generic",
     "ruby:conf:test": "mocha './ruby/configuration/test/*.spec.js'",

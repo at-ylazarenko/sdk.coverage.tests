@@ -5,12 +5,12 @@ ${emittedTest.hooks.deps.join('\n')}
 
 public class ${emittedTest.name} extends TestSetup {
   ${emittedTest.hooks.vars.join('\n  ')}
-  @BeforeTest
+  @BeforeMethod
   public void before(){
     ${emittedTest.hooks.beforeEach.join('\n    ')}
   }
   
-  @AfterTest
+  @AfterMethod
   public void after(){
     ${emittedTest.hooks.afterEach.join('\n    ')}
   }

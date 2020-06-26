@@ -26,11 +26,23 @@ function initialize(options) {
      return (typeof actual === 'undefined') ? ifUndefined : actual
   }
 
+  function emptyValue() {
+    return {
+      isRef: true,
+      resolve: () => ''
+    }
+  }
+
+  function extraParameter(param){
+    return (typeof param === 'undefined') ? emptyValue() : `, ${param}`
+  }
+
   tracker.storeHook('deps', `package test.coverage.generic;`)
   tracker.storeHook('deps', ``)
   tracker.storeHook('deps', `import test.coverage.TestSetup;`)
   tracker.storeHook('deps', `import com.applitools.eyes.*;`)
-  tracker.storeHook('deps', `import org.openqa.selenium.By;`)
+  tracker.storeHook('deps', `import com.applitools.eyes.selenium.fluent.Target;`)
+  tracker.storeHook('deps', `import org.openqa.selenium.*;`)
   tracker.storeHook('deps', `import org.testng.annotations.*;`)
 
   tracker.addSyntax('var', ({name, value}) => `WebElement ${name} = ${value}`)
@@ -40,10 +52,8 @@ function initialize(options) {
       java`initEyes(${argumentCheck(options.executionMode.isVisualGrid, false)}, ${argumentCheck(options.executionMode.isCssStitching, false)}, ${argumentCheck(options.branchName, "master")});`,
   )
 
-  tracker.storeHook(
-      'beforeEach',
-      java`buildDriver();`,
-  )
+  tracker.storeHook('beforeEach', java`buildDriver();`)
+  tracker.storeHook('beforeEach', java`System.out.println(getClass().getName());`)
 
   tracker.storeHook('afterEach', java`driver.quit();`)
   tracker.storeHook('afterEach', java`eyes.abort();`)
@@ -60,7 +70,7 @@ function initialize(options) {
       tracker.storeCommand(java`driver.get(${url});`)
     },
     executeScript(script, ...args) {
-      return tracker.storeCommand(java`driver.execute_script(${script});`)
+      return tracker.storeCommand(java`driver.executeScript(${script});`)
     },
     sleep(ms) {
       // TODO need implementation
@@ -76,12 +86,12 @@ function initialize(options) {
     },
     findElement(selector) {
       return tracker.storeCommand(
-          java`driver.findElement(css: ${selector});`,
+          java`driver.findElement(By.cssSelector(${selector}));`,
       )
     },
     findElements(selector) {
       return tracker.storeCommand(
-          java`driver.findElements(css: ${selector})`,
+          java`driver.findElements(By.cssSelector(${selector}));`,
       )
     },
     getWindowLocation() {
@@ -101,11 +111,11 @@ function initialize(options) {
       console.log('Need to be implemented')
     },
     click(element) {
-      if(typeof element === 'object') tracker.storeCommand(java`${element}.click`)
-      else tracker.storeCommand(java`driver.findElement(By.cssSelector(${element})).click`)
+      if(typeof element === 'object') tracker.storeCommand(java`${element}.click();`)
+      else tracker.storeCommand(java`driver.findElement(By.cssSelector(${element})).click();`)
     },
     type(element, keys) {
-      tracker.storeCommand(java`${element}.sendKeys(${keys})`)
+      tracker.storeCommand(java`${element}.sendKeys(${keys});`)
     },
     waitUntilDisplayed() {
       // TODO: implement if needed
@@ -156,30 +166,23 @@ function initialize(options) {
       tracker.storeCommand(java`eyes.open(driver, ${appName}, ${options.baselineTestName}, new RectangleSize(${viewportSize.width}, ${viewportSize.height}));`)
     },
     check(checkSettings) {
-      tracker.storeCommand(`@eyes.check(${checkSettingsParser(checkSettings)});`)
+      tracker.storeCommand(`eyes.check(${checkSettingsParser(checkSettings)});`)
     },
     checkWindow(tag, matchTimeout, stitchContent) {
       if(matchTimeout || stitchContent) throw new Error(`There is no signature in java SDK for usage both matchTimeout and stitchContent`)
       tracker.storeCommand(java`eyes.checkWindow(${argumentCheck(tag, '')});`)
     },
     checkFrame(element, matchTimeout, tag) {
-      tracker.storeCommand(java`@eyes.check_frame(frame: ${element}, timeout: ${matchTimeout}, tag: ${tag});`)
+      tracker.storeCommand(java`@eyes.checkFrame(${element},${matchTimeout},${tag});`)
     },
     checkElement(element, matchTimeout, tag) {
-      // TODO need implementation
-      console.log('Need to be implemented')
+      tracker.storeCommand(java`eyes.checkElement(${element}, ${matchTimeout}, ${tag});`)
     },
     checkElementBy(selector, matchTimeout, tag) {
-      tracker.storeCommand(java`@eyes.check_region(:css, ${selector},
-                       tag: ${tag},
-                       match_timeout: ${matchTimeout},
-                       stitch_content: true)`)
+      tracker.storeCommand(java`eyes.checkElement(By.cssSelector(${selector})${extraParameter(matchTimeout)}${extraParameter(tag)});`)
     },
     checkRegion(region, matchTimeout, tag) {
-      tracker.storeCommand(rjava`@eyes.check_region(:css, ${selector},
-                       tag: ${tag},
-                       match_timeout: ${matchTimeout},
-                       stitch_content: true)`)
+      tracker.storeCommand(java`eyes.checkRegion(${region},${matchTimeout}, ${tag});`)
     },
     checkRegionByElement(element, matchTimeout, tag) {
       // TODO need implementation

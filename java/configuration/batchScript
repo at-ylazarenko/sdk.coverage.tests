@@ -1,0 +1,1 @@
+env APPLITOOLS_BATCH_NAME='Java Coverage Tests' APPLITOOLS_BATCH_ID=$(uuidgen)
