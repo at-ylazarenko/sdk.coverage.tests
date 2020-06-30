@@ -170,7 +170,7 @@ function initialize(options) {
                        stitch_content: true)`)
     },
     checkRegion(region, matchTimeout, tag) {
-      tracker.storeCommand(rruby`@eyes.check_region(:css, ${selector},
+      tracker.storeCommand(ruby`@eyes.check_region(:css, ${selector},
                        tag: ${tag},
                        match_timeout: ${matchTimeout},
                        stitch_content: true)`)

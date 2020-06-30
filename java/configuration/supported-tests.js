@@ -1,6 +1,6 @@
 module.exports = [
 
-  {name: 'TestAbortIfNotClosed', executionMode: {isVisualGrid: true}},
+  {name: 'TestAbortIfNotClosed', executionMode: {isVisualGrid: true}, disabled: true},
   {name: 'TestAbortIfNotClosed', executionMode: {isCssStitching: true}},
 
   {name: 'TestAcmeLogin', executionMode: {isVisualGrid: true}},

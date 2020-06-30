@@ -9,7 +9,7 @@ Steps to run the tests for the first time
 1. run command `yarn install` // install JS dependencies
 2. open ruby directory
 3. run command `bundle install` // install ruby dependencies
-4. run command `yarn ruby:test` // command which generates and run tests
+4. run command `yarn ruby:test` // command which generates and run tests, send report if all the tests passed
 
 If the dependencies haven't changed to generate and run the tests only the last step needed
 
