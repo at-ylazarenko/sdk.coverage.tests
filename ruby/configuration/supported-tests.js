@@ -52,7 +52,7 @@ module.exports = [
     executionMode: {isScrollStitching: true},
     disabled: true,
   },
-  {name: 'TestCheckPageWithHeader_Window', executionMode: {isVisualGrid: true}, disabled: true},
+  {name: 'TestCheckPageWithHeader_Window', executionMode: {isVisualGrid: true}},
   {name: 'TestCheckPageWithHeader_Window', executionMode: {isCssStitching: true}},
   {name: 'TestCheckPageWithHeader_Window', executionMode: {isScrollStitching: true}},
   {name: 'TestCheckPageWithHeader_Window_Fully', executionMode: {isVisualGrid: true}},
@@ -63,7 +63,7 @@ module.exports = [
     disabled: true,
   },
   {name: 'TestCheckPageWithHeader_Region', executionMode: {isVisualGrid: true}},
-  {name: 'TestCheckPageWithHeader_Region', executionMode: {isCssStitching: true}, disabled: true},
+  {name: 'TestCheckPageWithHeader_Region', executionMode: {isCssStitching: true}},
   {name: 'TestCheckPageWithHeader_Region', executionMode: {isScrollStitching: true}, disabled: true},
   {name: 'TestCheckPageWithHeader_Region_Fully', executionMode: {isVisualGrid: true}},
   {
@@ -89,7 +89,6 @@ module.exports = [
   {
     name: 'TestCheckRegionBySelectorAfterManualScroll_Fluent',
     executionMode: {isCssStitching: true},
-    disabled: true
   },
   {
     name: 'TestCheckRegionBySelectorAfterManualScroll_Fluent',
@@ -102,22 +101,22 @@ module.exports = [
   {name: 'TestCheckWindow', executionMode: {isVisualGrid: true}, disabled: true},
   {name: 'TestCheckWindow', executionMode: {isCssStitching: true}},
   {name: 'TestCheckWindow', executionMode: {isScrollStitching: true}},
-  {name: 'TestCheckWindowAfterScroll', executionMode: {isVisualGrid: true}, disabled: true},
+  {name: 'TestCheckWindowAfterScroll', executionMode: {isVisualGrid: true}},
   {name: 'TestCheckWindowAfterScroll', executionMode: {isCssStitching: true}},
-  {name: 'TestCheckWindowAfterScroll', executionMode: {isScrollStitching: true}, disabled: true},
+  {name: 'TestCheckWindowAfterScroll', executionMode: {isScrollStitching: true}},
   {name: 'TestCheckWindow_Body', executionMode: {isVisualGrid: true}},
-  {name: 'TestCheckWindow_Body', executionMode: {isCssStitching: true}, disabled: true},
-  {name: 'TestCheckWindow_Body', executionMode: {isScrollStitching: true}, disabled: true},
+  {name: 'TestCheckWindow_Body', executionMode: {isCssStitching: true}},
+  {name: 'TestCheckWindow_Body', executionMode: {isScrollStitching: true}},
   {name: 'TestCheckWindow_Html', executionMode: {isVisualGrid: true}},
-  {name: 'TestCheckWindow_Html', executionMode: {isCssStitching: true}, disabled: true},
+  {name: 'TestCheckWindow_Html', executionMode: {isCssStitching: true}},
   {name: 'TestCheckWindow_Html', executionMode: {isScrollStitching: true}},
   {name: 'TestCheckWindow_Fluent', executionMode: {isVisualGrid: true}, disabled: true},
   {name: 'TestCheckWindow_Fluent', executionMode: {isCssStitching: true}},
   {name: 'TestCheckWindow_Fluent', executionMode: {isScrollStitching: true}},
   {name: 'TestCheckWindowFully', executionMode: {isVisualGrid: true}},
   {name: 'TestCheckWindowFully', executionMode: {isCssStitching: true}, disabled: true},
-  {name: 'TestCheckWindowFully', executionMode: {isScrollStitching: true}, disabled: true},
-  {name: 'TestCheckWindowViewport', executionMode: {isVisualGrid: true}, disabled: true},
+  {name: 'TestCheckWindowFully', executionMode: {isScrollStitching: true}},
+  {name: 'TestCheckWindowViewport', executionMode: {isVisualGrid: true}},
   {name: 'TestCheckWindowViewport', executionMode: {isCssStitching: true}},
   {name: 'TestCheckWindowViewport', executionMode: {isScrollStitching: true}},
   {name: 'TestCheckWindow_Simple_Html', executionMode: {isVisualGrid: true}},
@@ -179,17 +178,14 @@ module.exports = [
   {
     name: 'TestScrollbarsHiddenAndReturned_Fluent',
     executionMode: {isVisualGrid: true},
-    disabled: true
   },
   {
     name: 'TestScrollbarsHiddenAndReturned_Fluent',
     executionMode: {isCssStitching: true},
-    disabled: true
   },
   {
     name: 'TestScrollbarsHiddenAndReturned_Fluent',
     executionMode: {isScrollStitching: true},
-    disabled: true
   },
   {name: 'TestAbortIfNotClosed', executionMode: {isVisualGrid: true}},
   {name: 'TestAbortIfNotClosed', executionMode: {isCssStitching: true}},
@@ -197,7 +193,7 @@ module.exports = [
   {name: 'TestCheckFixedRegion', executionMode: {isCssStitching: true}, disabled: true},
   {name: 'TestCheckFixedRegion', executionMode: {isScrollStitching: true}},
   {name: 'TestCheckFixedRegion_Fully', executionMode: {isVisualGrid: true}},
-  {name: 'TestCheckFixedRegion_Fully', executionMode: {isCssStitching: true}, disabled: true},
+  {name: 'TestCheckFixedRegion_Fully', executionMode: {isCssStitching: true}},
   {name: 'TestCheckFixedRegion_Fully', executionMode: {isScrollStitching: true}},
   {name: 'TestSimpleModal', executionMode: {isVisualGrid: true}},
   {name: 'TestSimpleModal', executionMode: {isCssStitching: true}},
@@ -206,6 +202,6 @@ module.exports = [
   {name: 'TestScrollableModal_Fully', executionMode: {isScrollStitching: true}},
   {name: 'TestScrollableContentInModal_Fully', executionMode: {isCssStitching: true}, disabled: true},
   {name: 'TestScrollableContentInModal_Fully', executionMode: {isScrollStitching: true}, disabled: true},
-  {name: 'TestWindowWithModal_Fully', executionMode: {isScrollStitching: true}, disabled: true},
+  {name: 'TestWindowWithModal_Fully', executionMode: {isScrollStitching: true}},
 ]
 
