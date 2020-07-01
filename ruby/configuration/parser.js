@@ -45,6 +45,25 @@ function regionParameter (region) {
     return string
 }
 
+function ruby(chunks, ...values) {
+    let code = ''
+    values.forEach((value, index) => {
+        let stringified = ''
+        if (value && value.isRef) {
+            stringified = value.resolve()
+        } else if (typeof value === 'function') {
+            stringified = value.toString()
+        } else if (typeof value === 'undefined' || value === null){
+            stringified = 'nil'
+        } else {
+            stringified = JSON.stringify(value)
+        }
+        code += chunks[index] + stringified
+    })
+    return code + chunks[chunks.length - 1]
+}
+
 module.exports = {
-    checkSettingsParser: checkSettings
+    checkSettingsParser: checkSettings,
+    ruby: ruby
 }

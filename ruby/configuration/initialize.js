@@ -1,29 +1,14 @@
 'use strict'
 const {makeEmitTracker} = require('@applitools/sdk-coverage-tests')
-const {checkSettingsParser} = require('./parser')
+const {checkSettingsParser, ruby} = require('./parser')
 
 function initialize(options) {
   const tracker = makeEmitTracker()
-  function ruby(chunks, ...values) {
-    let code = ''
-    values.forEach((value, index) => {
-      let stringified = ''
-      if (value && value.isRef) {
-        stringified = value.resolve()
-      } else if (typeof value === 'function') {
-        stringified = value.toString()
-      } else if (typeof value === 'undefined'){
-        stringified = 'nil'
-      } else {
-        stringified = JSON.stringify(value)
-      }
-      code += chunks[index] + stringified
-    })
-    return code + chunks[chunks.length - 1]
-  }
 
   // tracker.storeHook('deps', `require 'eyes_selenium'`)
   tracker.addSyntax('var', ({name, value}) => `${name} = ${value}`)
+  tracker.addSyntax('getter', ({target, key}) => `${target}${key.startsWith('get') ? `.${key.slice(3).toLowerCase()}` : `["${key}"]`}`)
+  tracker.addSyntax('call', ({target, args}) => args.length > 0 ? `${target}(${args.map(val => JSON.stringify(val)).join(", ")})` : `${target}`)
 
   tracker.storeHook(
       'beforeEach',
@@ -54,15 +39,14 @@ function initialize(options) {
     },
     sleep(ms) {
       // TODO need implementation
-      console.log('Need to be implemented')
+      console.log(`Sleep Need to be implemented`)
     },
     switchToFrame(selector) {
-      // TODO need implementation
-      console.log('Need to be implemented')
+      tracker.storeCommand(ruby`@driver.switch_to.frame ${selector}`)
     },
     switchToParentFrame() {
       // TODO need implementation
-      console.log('Need to be implemented')
+      console.log(`Switch to parent frame Need to be implemented`)
     },
     findElement(selector) {
       return tracker.storeCommand(
@@ -76,19 +60,19 @@ function initialize(options) {
     },
     getWindowLocation() {
       // TODO need implementation
-      console.log('Need to be implemented')
+      console.log('Get window location Need to be implemented')
     },
     setWindowLocation(location) {
       // TODO need implementation
-      console.log('Need to be implemented')
+      console.log('Set window location Need to be implemented')
     },
     getWindowSize() {
       // TODO need implementation
-      console.log('Need to be implemented')
+      console.log('get window size Need to be implemented')
     },
     setWindowSize(size) {
       // TODO need implementation
-      console.log('Need to be implemented')
+      console.log('set window size Need to be implemented')
     },
     click(element) {
       if(typeof element === 'object') tracker.storeCommand(ruby`${element}.click`)
@@ -161,7 +145,7 @@ function initialize(options) {
     },
     checkElement(element, matchTimeout, tag) {
       // TODO need implementation
-      console.log('Need to be implemented')
+      console.log('checkElement Need to be implemented')
     },
     checkElementBy(selector, matchTimeout, tag) {
       tracker.storeCommand(ruby`@eyes.check_region(:css, ${selector},
@@ -177,15 +161,18 @@ function initialize(options) {
     },
     checkRegionByElement(element, matchTimeout, tag) {
       // TODO need implementation
-      console.log('Need to be implemented')
+      console.log('checkRegionByElement Need to be implemented')
     },
     checkRegionBy(selector, tag, matchTimeout, stitchContent) {
       // TODO need implementation
-      console.log('Need to be implemented')
+      console.log('checkRegionBy Need to be implemented')
     },
     checkRegionInFrame(frameReference, selector, matchTimeout, tag, stitchContent) {
-      // TODO need implementation
-      console.log('Need to be implemented')
+      tracker.storeCommand(ruby`@eyes.check_region_in_frame(frame: ${frameReference},
+                                by: [:css, ${selector}],
+                                tag: ${tag},
+                                stitch_content: ${stitchContent},
+                                timeout: ${matchTimeout})`)
     },
     close(throwEx) {
       tracker.storeCommand(ruby`@eyes.close(throw_exception: ${throwEx})`)
@@ -193,9 +180,30 @@ function initialize(options) {
     abort() {
       tracker.storeCommand(ruby`@eyes.abort`)
     },
+    getViewportSize() {
+      return tracker.storeCommand(ruby`@eyes.get_viewport_size`)
+    },
   }
 
-  return {tracker, driver, eyes}
+  const assert = {
+    strictEqual(actual, expected, message) {
+      tracker.storeCommand(ruby`expect(${actual}).to eql(${expected}), "${message}"`)
+    },
+    notStrictEqual(actual, expected, message) {
+      console.log('Need to be implemented')
+    },
+    deepStrictEqual(actual, expected, message) {
+      console.log('Need to be implemented')
+    },
+    notDeepStrictEqual(actual, expected, message) {
+      console.log('Need to be implemented')
+    },
+    ok(value, message) {
+      tracker.storeCommand(ruby`expect(${value}).to be_truthy, "${message}"`)
+    },
+  }
+
+  return {tracker, driver, eyes, assert}
 }
 
 module.exports = {initialize}

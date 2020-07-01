@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@applitools/sdk-coverage-tests@1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@applitools/sdk-coverage-tests/-/sdk-coverage-tests-1.0.5.tgz#1540b08f2ec9a204b7c0f17d31110fc426c47a7e"
-  integrity sha512-QTmfFGzzfSUDkgB65NLDaULKZgTQpftO4GApLFZ46fNxh2bjEyDknwnepTCIUXR0hVmo0WbSfcKNtnjWwE8fnQ==
+"@applitools/sdk-coverage-tests@1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@applitools/sdk-coverage-tests/-/sdk-coverage-tests-1.0.6.tgz#1b6af1f5b3836858af7aeac54f587eb38af193c5"
+  integrity sha512-wQ/2ymTwVBboz88bk0+nsBvu4I0HYNtLHf83PYLxIyrZ4qR2S70bzrt/ZkzXaJn88RT68U4qMdoMmIw4DQwOsg==
   dependencies:
     chai "^4.2.0"
     chai-as-promised "^7.1.1"
