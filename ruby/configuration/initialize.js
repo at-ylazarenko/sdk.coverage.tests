@@ -1,6 +1,6 @@
 'use strict'
 const {makeEmitTracker} = require('@applitools/sdk-coverage-tests')
-const {checkSettingsParser, ruby} = require('./parser')
+const {checkSettingsParser, ruby, driverBuild} = require('./parser')
 
 function initialize(options) {
   const tracker = makeEmitTracker()
@@ -12,7 +12,7 @@ function initialize(options) {
 
   tracker.storeHook(
       'beforeEach',
-      ruby`@driver = Selenium::WebDriver.for :remote, desired_capabilities: :chrome`,
+      driverBuild(options.capabilities, options.host),
   )
 
   tracker.storeHook(

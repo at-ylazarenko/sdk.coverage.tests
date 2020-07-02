@@ -1,26 +1,9 @@
 'use strict'
 const {makeEmitTracker} = require('@applitools/sdk-coverage-tests')
-const {checkSettingsParser} = require('./parser')
+const {checkSettingsParser, java} = require('./parser')
 
 function initialize(options) {
   const tracker = makeEmitTracker()
-  function java(chunks, ...values) {
-    let code = ''
-    values.forEach((value, index) => {
-      let stringified = ''
-      if (value && value.isRef) {
-        stringified = value.resolve()
-      } else if (typeof value === 'function') {
-        stringified = value.toString()
-      } else if (typeof value === 'undefined'){
-        throw Error(`Undefined shouldn't be passed to the java code`)
-      } else {
-        stringified = JSON.stringify(value)
-      }
-      code += chunks[index] + stringified
-    })
-    return code + chunks[chunks.length - 1]
-  }
 
   function argumentCheck(actual, ifUndefined){
      return (typeof actual === 'undefined') ? ifUndefined : actual
@@ -29,7 +12,7 @@ function initialize(options) {
   function emptyValue() {
     return {
       isRef: true,
-      resolve: () => ''
+      ref: () => ''
     }
   }
 

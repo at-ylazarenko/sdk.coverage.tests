@@ -44,6 +44,25 @@ function regionParameter (region, index = 0) {
     return string
 }
 
+function java(chunks, ...values) {
+    let code = ''
+    values.forEach((value, index) => {
+        let stringified = ''
+        if (value && value.isRef) {
+            stringified = value.ref()
+        } else if (typeof value === 'function') {
+            stringified = value.toString()
+        } else if (typeof value === 'undefined'){
+            throw Error(`Undefined shouldn't be passed to the java code`)
+        } else {
+            stringified = JSON.stringify(value)
+        }
+        code += chunks[index] + stringified
+    })
+    return code + chunks[chunks.length - 1]
+}
+
 module.exports = {
-    checkSettingsParser: checkSettings
+    checkSettingsParser: checkSettings,
+    java: java
 }
