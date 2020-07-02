@@ -16,9 +16,13 @@
   "scripts": {
     "java:create": "cd java && coverage-tests create-tests --path ./configuration",
     "ruby": "yarn docker:start && yarn ruby:test; yarn docker:stop",
+    "ruby:prod": "yarn && cd ruby && bundle install && yarn docker:start && yarn ruby:test:prod; yarn docker:stop",
+    "ruby:ci": "yarn && cd ruby && bundle install && yarn ruby",
     "ruby:test": "yarn ruby:create && yarn ruby:run:parallel && yarn ruby:report:merge && yarn ruby:report",
+    "ruby:test:prod": "yarn ruby:create && yarn ruby:run:parallel && yarn ruby:report:merge && yarn ruby:report:prod",
     "ruby:create": "cd ruby && coverage-tests create-tests --path ./configuration",
     "ruby:report": "cd ruby && coverage-tests process-report --path ./configuration",
+    "ruby:report:prod": "cd ruby && coverage-tests process-report --path ./configuration --send-report prod",
     "ruby:run": "cd ruby && APPLITOOLS_BATCH_NAME='Ruby Coverage Tests' APPLITOOLS_BATCH_ID=$(uuidgen) bundle exec rspec spec/coverage/generic",
     "ruby:run:parallel": "cd ruby && APPLITOOLS_BATCH_NAME='Ruby Coverage Tests' APPLITOOLS_BATCH_ID=$(uuidgen) bundle exec parallel_rspec -n 10 spec/coverage/generic",
     "ruby:report:merge": "cd ruby && junit-merge -d tmp -o coverage-test-report.xml",
