@@ -1,4 +1,5 @@
 require 'eyes_selenium'
+require 'logger'
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
@@ -8,10 +9,6 @@ RSpec.configure do |config|
     mocks.verify_partial_doubles = true
   end
   config.shared_context_metadata_behavior = :apply_to_host_groups
-
-  config.before(:suite) do
-    # $run_batch = Applitools::BatchInfo.new(ENV['APPLITOOLS_BATCH_NAME'] || 'Ruby Coverage Tests')
-  end
 
   def eyes(is_visual_grid:, is_css_stitching:, branch_name:)
     is_visual_grid = false if is_visual_grid.nil?
@@ -29,6 +26,8 @@ RSpec.configure do |config|
       conf.force_full_page_screenshot = false
     end
     eyes.match_timeout = 0 unless is_visual_grid
+    puts ENV['APPLITOOLS_SHOW_LOGS']
+    eyes.log_handler = Logger.new(STDOUT) if ENV.key?('APPLITOOLS_SHOW_LOGS')
     eyes
   end
 
