@@ -8,5 +8,5 @@ module.exports = {
   supportedTests,
   testFrameworkTemplate: testFrameworkTemplate,
   ext: '.java',
-  out: './src/test/coverage/generic'
+  out: './src/test/java/coverage/generic'
 }

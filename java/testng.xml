@@ -2,11 +2,12 @@
 
 <suite name="java_coverage_tests" verbose="1" parallel="classes" thread-count="8">
     <listeners>
-        <listener class-name="org.testng.reporters.JUnitXMLReporter"></listener>
+        <listener class-name="org.testng.reporters.JUnitXMLReporter" >
+        </listener>
     </listeners>
-    <test name="coverage"   >
+    <test name="coverage-test-report">
         <packages>
-            <package name="test.coverage.generic" />
+            <package name="coverage.generic" />
         </packages>
     </test>
 </suite>

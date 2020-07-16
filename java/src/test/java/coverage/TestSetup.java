@@ -1,4 +1,4 @@
-package test.coverage;
+package coverage;
 
 import com.applitools.eyes.BatchInfo;
 import com.applitools.eyes.EyesRunner;

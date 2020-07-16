@@ -1,5 +1,10 @@
 'use strict'
 
+const TYPES = {
+    "Map<String, Number>": (target, key) => `${target}.get("${key}").intValue()`,
+    "RectangleSize": (target, key) => `${target}.${key}`
+}
+
 function checkSettings(cs) {
     let java = `Target`
     if(cs === undefined){
@@ -62,7 +67,14 @@ function java(chunks, ...values) {
     return code + chunks[chunks.length - 1]
 }
 
+function getTypes({target, key, type}){
+    if (typeof type === 'undefined') return `${target}.${key}`
+    else if(TYPES[type]) return TYPES[type](target, key)
+    else throw new Error(`Haven't implement type ${type}`)
+}
+
 module.exports = {
     checkSettingsParser: checkSettings,
-    java: java
+    java: java,
+    getTypes: getTypes
 }

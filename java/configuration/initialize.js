@@ -1,6 +1,6 @@
 'use strict'
 const {makeEmitTracker} = require('@applitools/sdk-coverage-tests')
-const {checkSettingsParser, java} = require('./parser')
+const {checkSettingsParser, java, getTypes} = require('./parser')
 
 function initialize(options) {
   const tracker = makeEmitTracker()
@@ -20,15 +20,19 @@ function initialize(options) {
     return (typeof param === 'undefined') ? emptyValue() : `, ${param}`
   }
 
-  tracker.storeHook('deps', `package test.coverage.generic;`)
+  tracker.storeHook('deps', `package coverage.generic;`)
   tracker.storeHook('deps', ``)
-  tracker.storeHook('deps', `import test.coverage.TestSetup;`)
+  tracker.storeHook('deps', `import coverage.TestSetup;`)
   tracker.storeHook('deps', `import com.applitools.eyes.*;`)
   tracker.storeHook('deps', `import com.applitools.eyes.selenium.fluent.Target;`)
   tracker.storeHook('deps', `import org.openqa.selenium.*;`)
   tracker.storeHook('deps', `import org.testng.annotations.*;`)
+  tracker.storeHook('deps', `import org.testng.Assert;`)
+  tracker.storeHook('deps', `import java.util.Map;`)
 
-  tracker.addSyntax('var', ({name, value}) => `WebElement ${name} = ${value}`)
+  tracker.addSyntax('var', ({name, value, type='WebElement'}) => `${type} ${name} = (${type}) ${value}`)
+  tracker.addSyntax('getter', getTypes)
+  tracker.addSyntax('call', ({target, args}) => args.length > 0 ? `${target}(${args.map(val => JSON.stringify(val)).join(", ")})` : `${target}()`)
 
   tracker.storeHook(
       'beforeEach',
@@ -94,7 +98,7 @@ function initialize(options) {
       console.log('Need to be implemented')
     },
     click(element) {
-      if(typeof element === 'object') tracker.storeCommand(java`${element}.click();`)
+      if(element.isRef) tracker.storeCommand(java`${element}.click();`)
       else tracker.storeCommand(java`driver.findElement(By.cssSelector(${element})).click();`)
     },
     type(element, keys) {
@@ -185,9 +189,18 @@ function initialize(options) {
     abort() {
       tracker.storeCommand(java`eyes.abort();`)
     },
+    getViewportSize() {
+      return tracker.storeCommand(java`eyes.getViewportSize();`)
+    },
   }
 
-  return {tracker, driver, eyes}
+  const assert = {
+    strictEqual(actual, expected, message){
+      tracker.storeCommand(java`Assert.assertEquals(${actual}, ${expected}${extraParameter(message)});`)
+    }
+  }
+
+  return {tracker, driver, eyes, assert}
 }
 
 module.exports = {initialize}
