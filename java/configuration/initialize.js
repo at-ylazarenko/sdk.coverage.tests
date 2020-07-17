@@ -16,6 +16,13 @@ function initialize(options) {
     }
   }
 
+  function findFrame(frame){
+    return frame.isRef ? frame : {
+      isRef: true,
+      ref: () => `driver.findElement(By.cssSelector(${JSON.stringify(frame)}))`
+    }
+  }
+
   function extraParameter(param){
     return (typeof param === 'undefined') ? emptyValue() : `, ${param}`
   }
@@ -48,7 +55,7 @@ function initialize(options) {
   const driver = {
     build(options) {
       // TODO need implementation
-      console.log('Need to be implemented')
+      console.log('build Need to be implemented')
     },
     cleanup() {
       tracker.storeCommand(java`driver.quit();`)
@@ -61,15 +68,14 @@ function initialize(options) {
     },
     sleep(ms) {
       // TODO need implementation
-      console.log('Need to be implemented')
+      console.log('sleep Need to be implemented')
     },
     switchToFrame(selector) {
-      // TODO need implementation
-      console.log('Need to be implemented')
+      tracker.storeCommand(java`driver.switchTo().frame(${selector});`)
     },
     switchToParentFrame() {
       // TODO need implementation
-      console.log('Need to be implemented')
+      console.log('switchToParentFrame Need to be implemented')
     },
     findElement(selector) {
       return tracker.storeCommand(
@@ -83,19 +89,19 @@ function initialize(options) {
     },
     getWindowLocation() {
       // TODO need implementation
-      console.log('Need to be implemented')
+      console.log('getWindowLocation Need to be implemented')
     },
     setWindowLocation(location) {
       // TODO need implementation
-      console.log('Need to be implemented')
+      console.log('setWindowLocation Need to be implemented')
     },
     getWindowSize() {
       // TODO need implementation
-      console.log('Need to be implemented')
+      console.log('getWindowSize Need to be implemented')
     },
     setWindowSize(size) {
       // TODO need implementation
-      console.log('Need to be implemented')
+      console.log('setWindowSize Need to be implemented')
     },
     click(element) {
       if(element.isRef) tracker.storeCommand(java`${element}.click();`)
@@ -160,10 +166,10 @@ function initialize(options) {
       tracker.storeCommand(java`eyes.checkWindow(${argumentCheck(tag, '')});`)
     },
     checkFrame(element, matchTimeout, tag) {
-      tracker.storeCommand(java`@eyes.checkFrame(${element},${matchTimeout},${tag});`)
+      tracker.storeCommand(java`eyes.checkFrame(${findFrame(element)}${extraParameter(matchTimeout)}${extraParameter(tag)});`)
     },
     checkElement(element, matchTimeout, tag) {
-      tracker.storeCommand(java`eyes.checkElement(${element}, ${matchTimeout}, ${tag});`)
+      tracker.storeCommand(java`eyes.checkElement(${element}${extraParameter(matchTimeout)}${extraParameter(tag)});`)
     },
     checkElementBy(selector, matchTimeout, tag) {
       tracker.storeCommand(java`eyes.checkElement(By.cssSelector(${selector})${extraParameter(matchTimeout)}${extraParameter(tag)});`)
@@ -173,15 +179,15 @@ function initialize(options) {
     },
     checkRegionByElement(element, matchTimeout, tag) {
       // TODO need implementation
-      console.log('Need to be implemented')
+      console.log('checkRegionByElement Need to be implemented')
     },
     checkRegionBy(selector, tag, matchTimeout, stitchContent) {
       // TODO need implementation
-      console.log('Need to be implemented')
+      console.log('checkRegionBy Need to be implemented')
     },
     checkRegionInFrame(frameReference, selector, matchTimeout, tag, stitchContent) {
-      // TODO need implementation
-      console.log('Need to be implemented')
+      if(matchTimeout === null) matchTimeout = -1
+      tracker.storeCommand(java`eyes.checkRegionInFrame(${findFrame(frameReference)}, By.cssSelector(${selector}), ${matchTimeout}, ${tag}, ${stitchContent});`)
     },
     close(throwEx) {
       tracker.storeCommand(java`eyes.close(${argumentCheck(throwEx, true)});`)

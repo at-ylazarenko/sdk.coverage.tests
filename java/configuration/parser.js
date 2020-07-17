@@ -58,7 +58,7 @@ function java(chunks, ...values) {
         } else if (typeof value === 'function') {
             stringified = value.toString()
         } else if (typeof value === 'undefined'){
-            throw Error(`Undefined shouldn't be passed to the java code`)
+            throw Error(`Undefined shouldn't be passed to the java code. \n ${values}`)
         } else {
             stringified = JSON.stringify(value)
         }

@@ -1,7 +1,6 @@
 package coverage;
 
-import com.applitools.eyes.BatchInfo;
-import com.applitools.eyes.EyesRunner;
+import com.applitools.eyes.*;
 import com.applitools.eyes.selenium.ClassicRunner;
 import com.applitools.eyes.selenium.Eyes;
 import com.applitools.eyes.selenium.StitchMode;
@@ -43,6 +42,11 @@ public class TestSetup {
         eyes.setBatch(batch);
         eyes.setSaveNewTests(false);
         eyes.setForceFullPageScreenshot(false);
+        String showLogs = System.getenv("APPLITOOLS_SHOW_LOGS");
+        String verbose = System.getenv("APPLITOOLS_SHOW_LOGS_VERBOSE");
+        if (showLogs != null && showLogs.equals("true")) {
+            eyes.setLogHandler(new StdoutLogHandler((verbose != null && verbose.equals("true"))));
+        }
     }
 
     public void buildDriver(Capabilities capabilities) {
@@ -55,7 +59,7 @@ public class TestSetup {
         driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
     }
 
-    public void buildDriver(){
+    public void buildDriver() {
         Capabilities chrome = new ChromeOptions().setHeadless(true);
         buildDriver(chrome);
     }
