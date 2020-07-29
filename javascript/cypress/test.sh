@@ -1,5 +1,5 @@
 #!/bin/bash
 bash ./bootstrap.sh
-cd home/project/tutorial-selenium-javascript-basic
+cd home/project/tutorial-cypress
 npm install
 npm test

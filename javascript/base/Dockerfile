@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:trusty
 
 RUN apt-get update && apt-get clean && apt-get install -y \
     x11vnc \
@@ -11,13 +11,7 @@ RUN apt-get update && apt-get clean && apt-get install -y \
     && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list \
     && apt-get update && apt-get -y install google-chrome-stable \
     && apt update \
-    && apt install -y git-all \
-    && curl -sL https://deb.nodesource.com/setup_current.x | bash - \
-    && apt-get install -y nodejs
-
-RUN useradd apps \
-    && mkdir -p /home/apps \
-    && chown -v -R apps:apps /home/apps
+    && apt install -y git-all
 
 RUN mkdir /home/project
 
