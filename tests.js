@@ -1,3 +1,4 @@
+/*eslint-env browser */
 const url = 'https://applitools.github.io/demo/TestPages/FramesTestPage/'
 const viewportSize = {width: 700, height: 460}
 const throwException = true
@@ -390,19 +391,7 @@ module.exports = {
     eyes.close(throwException)
   },
   TestTooBigViewportSize: {
-    options: {
-      capabilities: {
-        browserName: 'chrome',
-        browserVersion: 'latest',
-        platformName: 'Windows 10',
-        'sauce:options': {
-          screenResolution: '1280x800',
-          username: process.env.SAUCE_USERNAME,
-          accesskey: process.env.SAUCE_ACCESS_KEY,
-        },
-      },
-      host: 'https://ondemand.saucelabs.com:443/wd/hub',
-    },
+    env: {browser: 'chrome', headless: false},
     test: ({driver, eyes, assert}) => {
       eyes.open({
         appName: 'Eyes Selenium SDK - Fluent API',
@@ -428,19 +417,7 @@ module.exports = {
     assert.deepStrictEqual(actualViewportSize, expectedViewportSize)
   },
   TestSetViewportSizeEdge: {
-    options: {
-      capabilities: {
-        browserName: 'MicrosoftEdge',
-        browserVersion: '18',
-        platformName: 'Windows 10',
-        'sauce:options': {
-          screenResolution: '1920x1080',
-          username: process.env.SAUCE_USERNAME,
-          accesskey: process.env.SAUCE_ACCESS_KEY,
-        },
-      },
-      host: 'https://ondemand.saucelabs.com:443/wd/hub',
-    },
+    env: {browser: 'edge18', remote: 'sauce'},
     // TODO : this is exactly the same test as TestSetViewportSize only on Edge
     test: ({driver, eyes, assert}) => {
       const expectedViewportSize = {width: 600, height: 600}
@@ -465,21 +442,12 @@ module.exports = {
     })
   },
   AppiumAndroidCheckRegion: {
-    options: {
-      capabilities: {
-        browserName: '',
-        name: 'Android Demo',
-        platformName: 'Android',
-        platformVersion: '7.0',
-        appiumVersion: '1.17.1',
-        deviceName: 'Samsung Galaxy S8 FHD GoogleAPI Emulator',
-        app: 'https://applitools.bintray.com/Examples/eyes-android-hello-world.apk',
-        automationName: 'uiautomator2',
-        username: process.env.SAUCE_USERNAME,
-        accesskey: process.env.SAUCE_ACCESS_KEY,
-      },
-      host: 'https://ondemand.saucelabs.com:443/wd/hub',
+    env: {
+      device: 'Samsung Galaxy S8',
+      app: 'https://applitools.bintray.com/Examples/eyes-android-hello-world.apk',
+      remote: 'sauce',
     },
+    meta: {'native-selectors': true},
     test: ({eyes}) => {
       eyes.open({appName: 'Applitools Eyes SDK'})
       eyes.check({region: 'android.widget.Button'})
@@ -487,22 +455,12 @@ module.exports = {
     },
   },
   TestHorizonalScroll: {
-    options: {
-      capabilities: {
-        browserName: 'firefox',
-        'sauce:options': {
-          seleniumVersion: '3.141.59',
-          username: process.env.SAUCE_USERNAME,
-          accesskey: process.env.SAUCE_ACCESS_KEY,
-        }
-      },
-      host: 'https://ondemand.saucelabs.com:443/wd/hub',
-    },
+    env: {browser: 'firefox', remote: 'sauce'},
     test: ({driver, eyes}) => {
       driver.visit('https://applitools.github.io/demo/TestPages/horizontal-scroll.html')
       eyes.open({appName: 'Applitools Eyes SDK', viewportSize: {width: 600, height: 400}})
       eyes.check({isFully: true})
       eyes.close(throwException)
-    }
-  }
+    },
+  },
 }
