@@ -124,12 +124,15 @@ module.exports = {
     eyes.check({region: 'img', frames: ['[name="frame1"]']})
     eyes.close(throwException)
   },
-  TestCheckRegionInAVeryBigFrameAfterManualSwitchToFrame: ({driver, eyes}) => {
-    driver.visit('https://applitools.github.io/demo/TestPages/WixLikeTestPage/index.html')
-    eyes.open({appName: 'Eyes Selenium SDK - Special Cases', viewportSize})
-    driver.switchToFrame(driver.findElement('[name="frame1"]'))
-    eyes.check({region: 'img'})
-    eyes.close(throwException)
+  TestCheckRegionInAVeryBigFrameAfterManualSwitchToFrame: {
+    features: ['webdriver'],
+    test: ({driver, eyes}) => {
+      driver.visit('https://applitools.github.io/demo/TestPages/WixLikeTestPage/index.html')
+      eyes.open({appName: 'Eyes Selenium SDK - Special Cases', viewportSize})
+      driver.switchToFrame(driver.findElement('[name="frame1"]'))
+      eyes.check({region: 'img'})
+      eyes.close(throwException)
+    }
   },
   TestCheckRegionByCoordinates_Fluent: ({driver, eyes}) => {
     driver.visit(url)
@@ -417,7 +420,7 @@ module.exports = {
     assert.deepStrictEqual(actualViewportSize, expectedViewportSize)
   },
   TestSetViewportSizeEdge: {
-    env: {browser: 'edge18', remote: 'sauce'},
+    env: {browser: 'edge-18'},
     // TODO : this is exactly the same test as TestSetViewportSize only on Edge
     test: ({driver, eyes, assert}) => {
       const expectedViewportSize = {width: 600, height: 600}
@@ -442,12 +445,8 @@ module.exports = {
     })
   },
   AppiumAndroidCheckRegion: {
-    env: {
-      device: 'Samsung Galaxy S8',
-      app: 'https://applitools.bintray.com/Examples/eyes-android-hello-world.apk',
-      remote: 'sauce',
-    },
-    meta: {'native-selectors': true},
+    env: {device: 'Samsung Galaxy S8', app: 'https://applitools.bintray.com/Examples/eyes-android-hello-world.apk'},
+    features: ['native-selectors'],
     test: ({eyes}) => {
       eyes.open({appName: 'Applitools Eyes SDK'})
       eyes.check({region: 'android.widget.Button'})
@@ -455,12 +454,59 @@ module.exports = {
     },
   },
   TestHorizonalScroll: {
-    env: {browser: 'firefox', remote: 'sauce'},
+    env: {browser: 'firefox'},
     test: ({driver, eyes}) => {
       driver.visit('https://applitools.github.io/demo/TestPages/horizontal-scroll.html')
       eyes.open({appName: 'Applitools Eyes SDK', viewportSize: {width: 600, height: 400}})
       eyes.check({isFully: true})
       eyes.close(throwException)
+    },
+  },
+  RefreshStaleScrollRootElementAfterPageReload: () => {
+    driver.visit('https://applitools.github.io/demo/TestPages/RefreshDomPage')
+    eyes.open({appName: 'Applitools Eyes SDK', viewportSize: {width: 600, height: 500}})
+    eyes.check()
+    driver.visit('https://applitools.github.io/demo/TestPages/RefreshDomPage')
+    eyes.check()
+    eyes.close()
+  },
+  CheckStaleElement: {
+    features: ['webdriver'],
+    test: ({driver, eyes, assert}) => {
+      driver.visit('https://applitools.github.io/demo/TestPages/RefreshDomPage')
+      eyes.open({appName: 'Applitools Eyes SDK', viewportSize: {width: 600, height: 500}})
+      const element = driver.findElement('#inner-img')
+      driver.click('#invalidate-button')
+      assert.throws(
+        () => eyes.check({region: element}),
+        error => driver.constructor.isStaleElementError(error),
+      )
+    },
+  },
+  CheckRefreshableElement: {
+    features: ['webdriver'],
+    test: ({driver, eyes, assert}) => {
+      driver.visit('https://applitools.github.io/demo/TestPages/RefreshDomPage')
+      eyes.open({appName: 'Applitools Eyes SDK', viewportSize: {width: 600, height: 500}})
+      const element = driver.findElement('#inner-img')
+      driver.click('#refresh-button')
+      eyes.check({region: element})
+      eyes.close()
+    },
+  },
+  CheckRefreshableElementInsideFrame: {
+    features: ['webdriver'],
+    test: () => {
+      driver.visit('https://applitools.github.io/demo/TestPages/RefreshDomPage/iframe')
+      eyes.open({appName: 'Applitools Eyes SDK', viewportSize: {width: 600, height: 500}})
+      const frameElement = driver.findElement('[name="frame"]').ref('frameElement')
+      driver.switchToFrame(frameElement)
+      const element = driver.findElement('#inner-img')
+      driver.click('#refresh-button')
+      driver.switchToFrame(null)
+
+      eyes.check({frames: [frameElement], region: element})
+      eyes.close()
     },
   },
 }
