@@ -462,7 +462,7 @@ module.exports = {
       eyes.close(throwException)
     },
   },
-  RefreshStaleScrollRootElementAfterPageReload: () => {
+  RefreshStaleScrollRootElementAfterPageReload: ({driver, eyes}) => {
     driver.visit('https://applitools.github.io/demo/TestPages/RefreshDomPage')
     eyes.open({appName: 'Applitools Eyes SDK', viewportSize: {width: 600, height: 500}})
     eyes.check()
@@ -485,7 +485,7 @@ module.exports = {
   },
   CheckRefreshableElement: {
     features: ['webdriver'],
-    test: ({driver, eyes, assert}) => {
+    test: ({driver, eyes}) => {
       driver.visit('https://applitools.github.io/demo/TestPages/RefreshDomPage')
       eyes.open({appName: 'Applitools Eyes SDK', viewportSize: {width: 600, height: 500}})
       const element = driver.findElement('#inner-img')
@@ -496,7 +496,7 @@ module.exports = {
   },
   CheckRefreshableElementInsideFrame: {
     features: ['webdriver'],
-    test: () => {
+    test: ({driver, eyes}) => {
       driver.visit('https://applitools.github.io/demo/TestPages/RefreshDomPage/iframe')
       eyes.open({appName: 'Applitools Eyes SDK', viewportSize: {width: 600, height: 500}})
       const frameElement = driver.findElement('[name="frame"]').ref('frameElement')
