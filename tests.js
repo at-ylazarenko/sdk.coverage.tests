@@ -511,14 +511,13 @@ module.exports = {
   },
   CheckRegionInFrameLargerThenViewport: ({driver, eyes}) => {
     driver.visit('https://applitools.github.io/demo/TestPages/OutOfViewport/')
-    driver.open({appName: 'Applitools Eyes SDK', viewportSize: {width: 800, height: 600}})
-    eyes.setScrollRootElement('body')
-    await eyes.check({
+    eyes.open({appName: 'Applitools Eyes SDK', viewportSize: {width: 800, height: 600}})
+    eyes.check({
       region: '#list',
       scrollRootElement: 'body',
       frames: [{frame: 'frame-list', scrollRootElement: 'body'}],
       isFully: true,
     })
-    return eyes.close()
+    eyes.close()
   },
 }
