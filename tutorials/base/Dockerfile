@@ -1,6 +1,7 @@
-FROM ubuntu:trusty
+FROM ubuntu:bionic
 
 RUN apt-get update && apt-get clean && apt-get install -y \
+    gnupg2 \
     x11vnc \
     xvfb \
     fluxbox \
@@ -11,7 +12,7 @@ RUN apt-get update && apt-get clean && apt-get install -y \
     && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list \
     && apt-get update && apt-get -y install google-chrome-stable \
     && apt update \
-    && apt install -y git-all
+    && apt install -y git
 
 RUN mkdir /home/project
 
@@ -21,5 +22,6 @@ COPY chrome_wrapper.sh /opt/bin/wrap_chrome_binary
 RUN /opt/bin/wrap_chrome_binary
 
 COPY bootstrap.sh /
+COPY chrome_setup.sh /
 
 CMD '/bootstrap.sh'

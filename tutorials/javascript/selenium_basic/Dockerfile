@@ -5,6 +5,6 @@ RUN cd home/project \
     && cd tutorial-selenium-javascript-basic \
     && find ./test -type f -exec sed -i "s/'APPLITOOLS_API_KEY'/process.env.APPLITOOLS_API_KEY/g" {} \;
 
-COPY test.sh /
+COPY . /
 
 CMD '/test.sh'
