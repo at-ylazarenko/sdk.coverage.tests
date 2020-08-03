@@ -186,10 +186,10 @@ module.exports = {
       floatingRegions: [
         {
           region: {left: 25, top: 25, width: 25, height: 25},
-          maxUp: 200,
-          maxDown: 200,
-          maxLeft: 150,
-          maxRight: 150,
+          maxUpOffset: 200,
+          maxDownOffset: 200,
+          maxLeftOffset: 150,
+          maxRightOffset: 150,
         },
       ],
       matchLevel: 'Layout',
@@ -270,10 +270,10 @@ module.exports = {
       floatingRegions: [
         {
           region: {left: 10, top: 10, width: 20, height: 10},
-          maxUp: 3,
-          maxDown: 3,
-          maxLeft: 20,
-          maxRight: 30,
+          maxUpOffset: 3,
+          maxDownOffset: 3,
+          maxLeftOffset: 20,
+          maxRightOffset: 30,
         },
       ],
     })
@@ -286,10 +286,10 @@ module.exports = {
       floatingRegions: [
         {
           region: '#overflowing-div',
-          maxUp: 3,
-          maxDown: 3,
-          maxLeft: 20,
-          maxRight: 30,
+          maxUpOffset: 3,
+          maxDownOffset: 3,
+          maxLeftOffset: 20,
+          maxRightOffset: 30,
         },
       ],
     })
