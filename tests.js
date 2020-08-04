@@ -481,6 +481,7 @@ module.exports = {
         () => eyes.check({region: element}),
         error => driver.constructor.isStaleElementError(error),
       )
+      eyes.close(false)
     },
   },
   CheckRefreshableElement: {
