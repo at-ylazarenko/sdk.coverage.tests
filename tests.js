@@ -487,7 +487,7 @@ module.exports = {
   CheckRefreshableElement: {
     features: ['webdriver'],
     test: ({driver, eyes}) => {
-      driver.visit('https://applitools.github.io/demo/TestPages/RefreshDomPage')
+      driver.visit('http://localhost:5000/TestPages/RefreshDomPage/auto-refresh')
       eyes.open({appName: 'Applitools Eyes SDK', viewportSize: {width: 600, height: 500}})
       const element = driver.findElement('#inner-img')
       driver.click('#refresh-button')
@@ -521,4 +521,9 @@ module.exports = {
     })
     eyes.close()
   },
+  TestGetAllTestResults: ({driver, eyes, assert}) => {
+    eyes.open({appName: 'Applitools Eyes SDK'})
+    assert.throws(() => eyes.close())
+    eyes.runner.getAllTestResults(false)
+  }
 }
