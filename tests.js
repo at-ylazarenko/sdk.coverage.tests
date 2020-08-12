@@ -525,5 +525,11 @@ module.exports = {
     eyes.open({appName: 'Applitools Eyes SDK'})
     assert.throws(() => eyes.close())
     eyes.runner.getAllTestResults(false)
+  },
+  CheckRegionWithFractionalMetrics: ({driver, eyes}) => {
+    driver.visit('https://applitools.github.io/demo/TestPages/FractionalMetrics')
+    eyes.open({appName: 'Applitools Eyes SDK', viewportSize})
+    eyes.check({region: '#target'})
+    eyes.close()
   }
 }
