@@ -534,13 +534,14 @@ module.exports = {
   },
   CheckJsLayoutPage: ({driver, eyes}) => {
     driver.visit('https://applitools.github.io/demo/TestPages/JsLayout')
-    eyes.setConfigurations({
+    eyes.setConfiguration({
       browsersInfo: [
         {name: 'chrome', width: 1001, height: 800},
         {iosDeviceInfo: {deviceName: 'iPad (7th generation)'}},
         {chromeEmulationInfo: {deviceName: 'Pixel 4 XL', orientation: 'portrait'}},
       ]
     })
+    eyes.open({appName: 'Applitools Eyes SDK'})
     eyes.check({layoutBreakpoints: [500, 1000]})
     eyes.close()
   }
