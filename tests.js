@@ -537,8 +537,8 @@ module.exports = {
     eyes.setConfiguration({
       browsersInfo: [
         {name: 'chrome', width: 1000, height: 800},
-        {iosDeviceInfo: {deviceName: 'iPad (7th generation)'}},
-        {chromeEmulationInfo: {deviceName: 'Pixel 4 XL', orientation: 'portrait'}},
+        {iosDeviceInfo: {deviceName: 'iPad (7th generation)'}, screenOrientation: 'landscape'},
+        {chromeEmulationInfo: {deviceName: 'Pixel 4 XL', screenOrientation: 'portrait'}},
       ]
     })
     eyes.open({appName: 'Applitools Eyes SDK'})
