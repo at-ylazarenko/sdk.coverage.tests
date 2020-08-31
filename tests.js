@@ -522,7 +522,7 @@ module.exports = {
     eyes.close()
   },
   TestGetAllTestResults: ({driver, eyes, assert}) => {
-    eyes.open({appName: 'Applitools Eyes SDK'})
+    eyes.open({appName: 'Applitools Eyes SDK', viewportSize: {width: 800, height: 600}})
     assert.throws(() => eyes.close())
     eyes.runner.getAllTestResults(false)
   },
