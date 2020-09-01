@@ -537,12 +537,26 @@ module.exports = {
     eyes.setConfiguration({
       browsersInfo: [
         {name: 'chrome', width: 1000, height: 800},
-        {iosDeviceInfo: {deviceName: 'iPad (7th generation)'}, screenOrientation: 'landscape'},
-        {chromeEmulationInfo: {deviceName: 'Pixel 4 XL', screenOrientation: 'portrait'}},
+        {iosDeviceInfo: {deviceName: 'iPad (7th generation)'}},
+        {chromeEmulationInfo: {deviceName: 'Pixel 4 XL'}},
       ]
     })
     eyes.open({appName: 'Applitools Eyes SDK'})
     eyes.check({layoutBreakpoints: [500, 1000]})
+    eyes.close()
+  },
+  CheckWindowOnJsLayoutPageWithConfig: ({driver, eyes}) => {
+    driver.visit('https://applitools.github.io/demo/TestPages/JsLayout')
+    eyes.setConfiguration({
+      browsersInfo: [
+        {name: 'chrome', width: 1000, height: 800},
+        {iosDeviceInfo: {deviceName: 'iPad (7th generation)'}},
+        {chromeEmulationInfo: {deviceName: 'Pixel 4 XL'}},
+      ],
+      layoutBreakpoints: [500, 1000]
+    })
+    eyes.open({appName: 'Applitools Eyes SDK'})
+    eyes.check()
     eyes.close()
   }
 }
