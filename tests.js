@@ -558,5 +558,14 @@ module.exports = {
     eyes.open({appName: 'Applitools Eyes SDK'})
     eyes.check()
     eyes.close()
+  },
+  CheckFocusedRegionInViewport: ({driver, eyes}) => {
+    driver.visit('https://applitools.github.io/demo/TestPages/StickyHeaderWithRegions')
+    eyes.open({appName: 'Applitools Eyes SDK', viewportSize})
+    const input = driver.findElement('#input').ref('input')
+    driver.scrollIntoView(input, 'center')
+    driver.moveTo(input)
+    eyes.check({region: input})
+    eyes.close()
   }
 }
