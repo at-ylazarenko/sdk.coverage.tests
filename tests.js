@@ -567,5 +567,11 @@ module.exports = {
     driver.moveTo(input)
     eyes.check({region: input})
     eyes.close()
-  }
+  },
+  TestCheckDomSnapshotCrossOriginFrames: ({driver, eyes}) => {
+    driver.visit('https://applitools.github.io/demo/TestPages/CorsTestPage/index.html')
+    eyes.open({appName: 'Cross origin iframes', viewportSize: {width: 1200, height: 800}})
+    eyes.check()
+    eyes.close(throwException)
+  },
 }
