@@ -1,10 +1,10 @@
 #!/bin/bash
 
+apt-get update
 apt-get -s upgrade | grep -q google-chrome-stable
 needUpdate=$?
 if [ "$needUpdate" -eq 0 ]
 then
-  apt-get update
   apt-get install google-chrome-stable
   bash ./opt/bin/wrap_chrome_binary
 else
