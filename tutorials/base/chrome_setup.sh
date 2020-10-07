@@ -6,7 +6,7 @@ needUpdate=$?
 if [ "$needUpdate" -eq 0 ]
 then
   apt-get install google-chrome-stable
-  bash ./opt/bin/wrap_chrome_binary
+  bash //opt/bin/wrap_chrome_binary
 else
   echo 'Latest version of the google-chrome is already used'
 fi
