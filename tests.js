@@ -570,9 +570,15 @@ module.exports = {
     eyes.close()
   },
   TestCheckDomSnapshotCrossOriginFrames: ({driver, eyes}) => {
-    driver.visit('https://applitools.github.io/demo/TestPages/CorsTestPage/index.html')
+    driver.visit('https://applitools.github.io/demo/TestPages/CorsTestPage')
     eyes.open({appName: 'Cross origin iframes', viewportSize: {width: 1200, height: 800}})
     eyes.check()
+    eyes.close(throwException)
+  },
+  CheckPageWithBurgerMenuFully: ({driver, eyes}) => {
+    driver.visit('http://applitools.github.io/demo/TestPages/PageWithBurgerMenu')
+    eyes.open({appName: 'Applitools Eyes SDK', viewportSize})
+    eyes.check({isFully: true})
     eyes.close(throwException)
   },
 }
