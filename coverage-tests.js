@@ -1,5 +1,6 @@
 /* eslint-disable */
 const viewportSize = {width: 700, height: 460}
+const assert = require('assert')
 
 config({
   pages: {
