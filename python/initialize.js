@@ -226,10 +226,10 @@ module.exports = function (tracker, test) {
 
     const assert = {
         equal(actual, expected, message) {
-            return addCommand(python`assert ${actual} == ${JSON.stringify(expected)}, ${message}`)
+            return addCommand(python`assert ${actual} == ${directString(JSON.stringify(expected))}, ${message}`)
         },
         notEqual(actual, expected, message) {
-            return addCommand(python`assert ${actual} != ${JSON.stringify(expected)}, ${message}`)
+            return addCommand(python`assert ${actual} != ${directString(JSON.stringify(expected))}, ${message}`)
         },
         ok(value, message) {
             return addCommand(python`assert ${value}, ${message}`)
