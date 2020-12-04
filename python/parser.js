@@ -4,9 +4,10 @@ const types = require('./mapping/types')
 const selectors = require('./mapping/selectors')
 
 function checkSettings(cs) {
+    let name = `'', `
     let target = `Target`
     if(cs === undefined){
-        return target + '.window()'
+        return name + target + '.window()'
     }
     let element = ''
     let options = ''
@@ -24,8 +25,8 @@ function checkSettings(cs) {
     if (cs.sendDom !== undefined) options += `.sendDom(${serialize(cs.sendDom)})`
     if (cs.matchLevel) options += `.match_level(MatchLevel.${cs.matchLevel.toUpperCase()})`
     if (cs.isFully) options += '.fully()'
-    if (cs.name) options += `.withName(${cs.name})`
-    return target + element + options
+    if (cs.name) name = `'${cs.name}', `
+    return name + target + element + options
 }
 
 function frames(arr) {
@@ -136,7 +137,7 @@ function parseObject(object) {
     if (object.selector) {
         return selectors[object.type](JSON.stringify(object.selector))
     } else if (object.type) {
-console.log("object.type = " + object.type)
+// console.log("object.type = " + object.type)
         const typeBuilder = types[object.type]
         if (typeBuilder) {
             if(typeBuilder.isGeneric) {

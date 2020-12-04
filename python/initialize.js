@@ -148,7 +148,7 @@ module.exports = function (tracker, test) {
 		    throw new Error('Not implemented classic api method was tried to generate')
 		  }
 	      } else {
-		addCommand(`eyes.check(${checkSettingsParser(checkSettings)});`)
+		addCommand(`eyes.check(${checkSettingsParser(checkSettings)})`)
 	      }
         },
         checkWindow(tag, matchTimeout, stitchContent) {
@@ -226,10 +226,10 @@ module.exports = function (tracker, test) {
 
     const assert = {
         equal(actual, expected, message) {
-            return addCommand(python`assert ${actual} == ${expected}, ${message}`)
+            return addCommand(python`assert ${actual} == ${JSON.stringify(expected)}, ${message}`)
         },
         notEqual(actual, expected, message) {
-            return addCommand(python`assert ${actual} != ${expected}, ${message}`)
+            return addCommand(python`assert ${actual} != ${JSON.stringify(expected)}, ${message}`)
         },
         ok(value, message) {
             return addCommand(python`assert ${value}, ${message}`)
