@@ -94,7 +94,7 @@ module.exports = {
     'should send dom and location when check window fully': {skipEmit: true},
     'should send dom and location when check window with vg': {skipEmit: true},
     'should send dom and location when check window': {skipEmit: true},
-    'should send dom of version 10': {skipEmit: true},
+    'should send dom of version 11': {skipEmit: true},
     'appium android check window': {skip: true},						//assertion for ignored region fails
     'appium android check region with ignore region': {skip: true},				//assertion for ignored region fails
     'appium iOS check window': {skip: true},							//assertion for ignored region fails
