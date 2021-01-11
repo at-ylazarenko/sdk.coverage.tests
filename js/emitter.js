@@ -1,3 +1,6 @@
+const {g, f} = require('./g.js')
+console.log(g, f)
+
 function js(chunks, ...values) {
   const commands = []
   let code = ''
