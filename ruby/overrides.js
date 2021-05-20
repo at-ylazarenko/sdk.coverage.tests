@@ -105,7 +105,7 @@ module.exports = {
     'check frame after manual switch to frame with scroll stitching classic': {skip: true},
     'should send floating region by coordinates in frame with css stitching': {skip: true}, //for branchName: 'current_ruby' - diff in floating region
     'should send floating region by coordinates in frame with vg': {skip: true},   //for branchName: 'current_ruby' - diff in floating region
-    'should send ignore region by coordinates with css stitching': {skip: true},
+    //'should send ignore region by coordinates with css stitching': {skip: true},
 
     // Assertion error
     'should send accessibility regions by selector with css stitching': {skip: true},
