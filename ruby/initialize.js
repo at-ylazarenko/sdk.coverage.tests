@@ -260,7 +260,7 @@ module.exports = function (tracker, test) {
         },
         getDom(results, domId) {
             return addCommand(ruby`get_dom(${results}, ${domId})`).methods({
-                getNodesByAttribute: (dom, name) => addExpression(ruby`get_nodes_by_attribute(${dom}, ${name})`)
+                getNodesByAttribute: (dom, name) => addExpression(ruby`get_nodes_by_attribute(${dom}, ${name})`).type('Array')
             }).ref('dom')
         },
         math: {
