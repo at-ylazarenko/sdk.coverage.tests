@@ -4,7 +4,7 @@ const {wrapSelector} = require('./util')
 
 
 module.exports = function (tracker, test) {
-    const {addSyntax, addCommand, addHook} = tracker
+    const {addSyntax, addCommand, addHook, addExpression} = tracker
     addSyntax('var', variable)
     addSyntax('getter', getter)
     addSyntax('call', call)
@@ -180,6 +180,12 @@ module.exports = function (tracker, test) {
         locate() {
             return addCommand(ruby`raise 'Eyes locate method havent been implemented'`)
         },
+        extractText(regions) {
+            return addCommand(ruby`@eyes.extractText(${regions})`)
+        },
+        extractTextRegions(settings) {
+            return addCommand(ruby`@eyes.extractTextRegions(${settings})`)
+        }
     }
 
     const assert = {
@@ -253,8 +259,15 @@ module.exports = function (tracker, test) {
             })
         },
         getDom(results, domId) {
-            return addCommand(ruby`get_dom(${results}, ${domId})`).ref('dom')
-        }
+            return addCommand(ruby`get_dom(${results}, ${domId})`).methods({
+                getNodesByAttribute: (dom, name) => addExpression(ruby`get_nodes_by_attribute(${dom}, ${name})`)
+            }).ref('dom')
+        },
+        math: {
+            round(number) {
+                return addCommand(ruby`(${number}).round`)
+            },
+        },
     }
 
     return {helpers, driver, eyes, assert}

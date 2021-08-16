@@ -20,7 +20,7 @@ function checkSettings(cs, driver, native) {
     if (cs.layoutRegions) options += layoutRegions(cs.layoutRegions)
     if (cs.ignoreRegions) options += ignoreRegions(cs.ignoreRegions);
     if (cs.floatingRegions) options += floatingRegions(cs.floatingRegions);
-    if (cs.scrollRootElement ) throw new Error("Scroll root option not implemented in the ruby SDK")
+    if (cs.scrollRootElement )  element += scrollRootElement(cs.scrollRootElement)
     if (cs.ignoreDisplacements !== undefined) options += `.ignore_displacements(${cs.ignoreDisplacements})`
     if (cs.sendDom !== undefined) options += `.send_dom(${serialize(cs.sendDom)})`
     if (cs.variationGroupId) options += `.variation_group_id(${serialize(cs.variationGroupId)})`
@@ -99,6 +99,10 @@ function checkSettings(cs, driver, native) {
 
     function layoutRegions(regions) {
         return regions.map(region => `.layout(${regionParameter(region)})`)
+    }
+
+    function scrollRootElement(scrollRootElement) {
+        return `.scroll_root_element(${regionParameter(scrollRootElement)})`
     }
 }
 
