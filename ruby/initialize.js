@@ -177,8 +177,8 @@ module.exports = function (tracker, test) {
         getViewportSize() {
             return addCommand(ruby`@eyes.get_viewport_size`)
         },
-        locate() {
-            return addCommand(ruby`raise 'Eyes locate method havent been implemented'`)
+        locate(visualLocator) {
+            return addCommand(ruby`@eyes.locate({locator_names: ${visualLocator.locatorNames}})`)
         },
         extractText(regions) {
             return addCommand(ruby`@eyes.extractText(${regions})`)
