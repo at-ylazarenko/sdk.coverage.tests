@@ -25,6 +25,7 @@ function checkSettings(cs, driver, native) {
     if (cs.sendDom !== undefined) options += `.send_dom(${serialize(cs.sendDom)})`
     if (cs.variationGroupId) options += `.variation_group_id(${serialize(cs.variationGroupId)})`
     if (cs.isFully) options += '.fully';
+    if (cs.visualGridOptions) options += `.visual_grid_options(polyfillAdoptedStyleSheets: ${cs.visualGridOptions.polyfillAdoptedStyleSheets})`
     if (cs.name) name = `'${cs.name}', `;
     return name + ruby + element + options
 
