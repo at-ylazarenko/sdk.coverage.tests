@@ -23,6 +23,7 @@ function checkSettings(cs, driver, native) {
     if (cs.scrollRootElement )  element += scrollRootElement(cs.scrollRootElement)
     if (cs.ignoreDisplacements !== undefined) options += `.ignore_displacements(${cs.ignoreDisplacements})`
     if (cs.sendDom !== undefined) options += `.send_dom(${serialize(cs.sendDom)})`
+    if (cs.layoutBreakpoints ) options += `.layout_breakpoints(${serialize(cs.layoutBreakpoints)})`
     if (cs.variationGroupId) options += `.variation_group_id(${serialize(cs.variationGroupId)})`
     if (cs.isFully) options += '.fully';
     if (cs.visualGridOptions) options += `.visual_grid_options(polyfillAdoptedStyleSheets: ${cs.visualGridOptions.polyfillAdoptedStyleSheets})`
