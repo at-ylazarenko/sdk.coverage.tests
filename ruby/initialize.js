@@ -181,7 +181,9 @@ module.exports = function (tracker, test) {
             return addCommand(ruby`@eyes.locate({locator_names: ${visualLocator.locatorNames}})`)
         },
         extractText(regions) {
-            return addCommand(ruby`@eyes.extract_text(${regions})`)
+            return addCommand(ruby`@eyes.extract_text(${regions})`).type({
+                type: 'Array'
+            })
         },
         extractTextRegions(settings) {
             return addCommand(ruby`@eyes.extract_text_regions(${settings})`).type({
