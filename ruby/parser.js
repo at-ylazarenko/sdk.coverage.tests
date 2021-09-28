@@ -25,10 +25,16 @@ function checkSettings(cs, driver, native) {
     if (cs.sendDom !== undefined) options += `.send_dom(${serialize(cs.sendDom)})`
     if (cs.layoutBreakpoints ) options += `.layout_breakpoints(${serialize(cs.layoutBreakpoints)})`
     if (cs.variationGroupId) options += `.variation_group_id(${serialize(cs.variationGroupId)})`
-    if (cs.isFully) options += '.fully';
+    if (cs.isFully !== undefined) options += `.fully(${serialize(cs.isFully)})`;
     if (cs.visualGridOptions) options += `.visual_grid_options(polyfillAdoptedStyleSheets: ${cs.visualGridOptions.polyfillAdoptedStyleSheets})`
+    if (cs.hooks) options += hooks(cs.hooks);
     if (cs.name) name = `'${cs.name}', `;
     return name + ruby + element + options
+
+    function hooks(obj){
+        const hooks = Object.keys(obj).map(key => `${key}: ${serialize(obj[key])}`).join(',')
+        return `.hooks(${hooks})`
+    }
 
     function frames(arr) {
         return arr.reduce((acc, val) => acc + `${frame(val)}`, '')
