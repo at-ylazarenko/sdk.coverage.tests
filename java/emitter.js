@@ -104,11 +104,13 @@ module.exports = function (tracker, test) {
   addHook('beforeEach', java`initEyes(${argumentCheck(test.vg, false)}, ${argumentCheck(test.config.stitchMode, 'Scroll')}, ${argumentCheck(test.branchName, "master")});`,)
   //if(test.config.baselineName) {  //
 	  if ((test.config.baselineName === 'TestCheckWindowWithFloatingBySelector_Fluent_VG') || (test.config.baselineName === 'TestCheckFullWindowWithMultipleIgnoreRegionsBySelector_Fluent_VG') || (test.config.baselineName === 'TestAccessibilityRegions_VG') || (test.config.baselineName === 'TestCheckWindowWithIgnoreBySelector_Fluent_VG') || (test.config.baselineName === 'TestCheckElementWithIgnoreRegionBySameElement_Fluent_VG')) {
-	    addHook('beforeEach', java`Configuration conf = eyes.getConfiguration();`)
+	    console.log("test.config.baselineName = " + test.config.baselineName)
+		addHook('beforeEach', java`Configuration conf = eyes.getConfiguration();`)
 		addHook('beforeEach', java`conf.addBrowser(700, 460, BrowserType.CHROME_ONE_VERSION_BACK);`)
 		addHook('beforeEach', java`eyes.setConfiguration(conf);`)
 	  }
 	  if (test.config.baselineName === 'Special Characters') {
+		console.log("test.config.baselineName = " + test.config.baselineName)
 		addHook('beforeEach', java`Configuration conf = eyes.getConfiguration();`)
 		addHook('beforeEach', java`conf.addBrowser(800, 600, BrowserType.CHROME_ONE_VERSION_BACK);`)
 		addHook('beforeEach', java`eyes.setConfiguration(conf);`)
