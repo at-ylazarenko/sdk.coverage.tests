@@ -58,9 +58,9 @@ function checkSettings(cs, driver, native) {
                 selector = val;
             } else if (isSelector(val)) {
                 // Might need to add mapping for selector's types if they won't match for ruby
-                selector = ref(`@driver.find_element(${val.type}: '${val.selector}')`)
+                selector = ref(`'${val.selector}'`)
             } else {
-                selector = ref(`@driver.find_element(css: '${val}')`)
+                selector = ref(`'${val}'`)
             }
             return serialize(selector)
         }
